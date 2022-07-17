@@ -123,12 +123,10 @@ app.get('/home', webAuth, (req, res) => {
     res.render(path.join(process.cwd(), 'src/views/index.hbs'), { nombre: req.session.nombre })
 })
 
-app.get('/productos-vista-test', (req, res) => {
-    res.sendFile(path.join(process.cwd(), '/views/productos-vista-test.html'))
-})
 
 
-app.post('/productos', async (req, res) => {
+
+app.post('/productos', apiAuth, async (req, res) => {
     const producto = req.body
     await contenedor.save(producto);
     let productos = await contenedor.getAll();
@@ -137,7 +135,7 @@ app.post('/productos', async (req, res) => {
 })
 
 
-app.get('/productos', (req, res) => {
+app.get('/productos', apiAuth, (req, res) => {
 
     let productos = contenedor.getAll()
 
@@ -146,13 +144,13 @@ app.get('/productos', (req, res) => {
         productosExists: productos.length
     });
 });
-app.get('/api/productos', (req, res) => {
+app.get('/api/productos', apiAuth, (req, res) => {
 
     let productos = contenedor.getAll()
 
     return res.send(productos)
 });
-app.get('/api/productos-test', (req, res) => {
+app.get('/api/productos-test', apiAuth, (req, res) => {
 
     let productos = contenedorfake.getAll()
 
